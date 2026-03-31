@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Claws Rezeptsammlung</title>
+    <meta name="app-version" content="2026-03-26-r6" />
+    <link rel="stylesheet" href="./styles.css?v=2026-03-26-r6" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <section class="brand-block panel surface-2">
+          <div>
+            <p class="eyebrow">Openclaw Küche</p>
+            <h1>Rezeptsammlung</h1>
+            <p class="lead muted">Praxisorientierte Sammlung für Budget, Alltag, Vorkochen und ehrliche Kochentscheidungen.</p>
+          </div>
+          <div id="heroFacts" class="hero-facts"></div>
+        </section>
+
+        <section class="panel filter-panel surface-1">
+          <div class="filter-group filter-group-search">
+            <div class="label-row">
+              <label for="searchInput">Suche</label>
+              <span class="key-hint">/</span>
+            </div>
+            <div class="search-shell">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input id="searchInput" type="search" placeholder="Kartoffel, Suppe, günstig, Ofen" />
+            </div>
+            <p class="field-hint muted">Beispiele: Zwiebel, schnell, sättigend · ≤ 1 € · wenig Zutaten</p>
+          </div>
+
+          <div class="filter-group">
+            <div class="group-head">
+              <h2>Quick-Szenarien</h2>
+              <span class="muted">Direkt brauchbare Presets</span>
+            </div>
+            <div id="presetButtons" class="preset-grid">
+              <button class="preset-button" data-preset="budget">≤ 1 €</button>
+              <button class="preset-button" data-preset="quick">Heute schnell</button>
+              <button class="preset-button" data-preset="mealprep">Vorkochen</button>
+              <button class="preset-button" data-preset="vegetarian">Vegetarisch</button>
+              <button class="preset-button" data-preset="basics">Standardzutaten</button>
+              <button class="preset-button" data-preset="noimage">Ohne Bilder</button>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <div class="group-head">
+              <h2>Grundfilter</h2>
+              <span class="muted">Stöbern, eingrenzen, sortieren</span>
+            </div>
+
+            <label class="field">
+              <span>Kategorie</span>
+              <select id="categoryFilter">
+                <option value="">Alle</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Tag</span>
+              <select id="tagFilter">
+                <option value="">Alle</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Sortierung</span>
+              <select id="sortSelect">
+                <option value="recommended">am alltagstauglichsten</option>
+                <option value="price-asc">günstigste zuerst</option>
+                <option value="time-asc">schnellste zuerst</option>
+                <option value="calories-asc">wenigste kcal</option>
+                <option value="ingredients-asc">wenigste Zutaten</option>
+                <option value="mealprep-first">Vorkochen zuerst</option>
+                <option value="title-asc">Titel A–Z</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="filter-group">
+            <div class="group-head">
+              <h2>Harte Filter</h2>
+              <span class="muted">Schnell an/aus statt Checkbox-Rohbau</span>
+            </div>
+            <div class="toggle-pills">
+              <button type="button" class="toggle-pill" id="cheapToggle" data-toggle="cheap" aria-pressed="false">≤ 1 €</button>
+              <button type="button" class="toggle-pill" id="fastToggle" data-toggle="fast" aria-pressed="false">≤ 30 min</button>
+              <button type="button" class="toggle-pill" id="vegetarianToggle" data-toggle="vegetarian" aria-pressed="false">vegetarisch</button>
+              <button type="button" class="toggle-pill" id="mealPrepToggle" data-toggle="mealprep" aria-pressed="false">Meal Prep</button>
+              <button type="button" class="toggle-pill" id="noImageToggle" data-toggle="noimage" aria-pressed="false">ohne Bilder</button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="randomBtn" class="button primary">🎲 Zufallsgericht</button>
+            <button id="resetFiltersBtn" class="button ghost">Filter zurücksetzen</button>
+          </div>
+        </section>
+
+        <section id="stats" class="panel stats-panel surface-1"></section>
+
+        <section class="panel surface-1 sidebar-note">
+          <p class="eyebrow">Version</p>
+          <p class="muted">r6 · Bildpfade und Nutzerspiegel sind sauber synchronisiert; Direktlinks, Druckansicht und neue Bilder landen jetzt wieder korrekt.</p>
+        </section>
+      </aside>
+
+      <main class="content">
+        <section class="hero panel surface-2">
+          <div>
+            <p class="eyebrow">Praxis statt Food-Blog</p>
+            <h2>Was koche ich heute?</h2>
+            <p class="hero-copy muted">Die Oberfläche ist jetzt stärker auf Entscheidungen gebaut: Preis, Zeit, Aufwand, Vorkochen und Alltagstauglichkeit sollen schneller lesbar sein als hübsche Deko.</p>
+          </div>
+          <div class="hero-scenarios" id="heroScenarios"></div>
+        </section>
+
+        <section class="active-filters-wrap panel surface-1">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Aktive Filter</p>
+              <h3>Gerade eingeschränkt auf</h3>
+            </div>
+            <button id="clearAllTopBtn" class="button ghost small">alles zurücksetzen</button>
+          </div>
+          <div id="activeFilters" class="active-filter-row"></div>
+        </section>
+
+        <section class="results-section">
+          <div class="section-head results-head">
+            <div>
+              <p class="eyebrow">Sammlung</p>
+              <h3>Rezepte</h3>
+            </div>
+            <div class="result-meta">
+              <span id="resultCount" class="result-count"></span>
+              <span id="resultSubtitle" class="muted"></span>
+            </div>
+          </div>
+
+          <div id="emptyState" class="empty-state panel surface-1 hidden"></div>
+          <div id="cardGrid" class="card-grid"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="recipeDialog" class="recipe-dialog hidden" aria-hidden="true">
+      <div class="dialog-backdrop" data-close-dialog="true"></div>
+      <div class="dialog-panel surface-2">
+        <button class="dialog-close no-print" aria-label="Schließen" data-close-dialog="true">×</button>
+        <div id="dialogContent"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js?v=2026-03-26-r6"></script>
+  </body>
+</html>

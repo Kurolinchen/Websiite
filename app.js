@@ -253,9 +253,9 @@ function renderHeroFacts() {
   `;
 
   els.heroScenarios.innerHTML = [
-    { preset: 'quick', title: 'Wenn du wenig Energie hast', text: 'Schnell, brauchbar, ohne langen Denk- und Schnippelkrieg.' },
-    { preset: 'mealprep', title: 'Wenn morgen auch noch Essen da sein soll', text: 'Vorkochen, Reste, aufwärmfreundlich.' },
-    { preset: 'budget', title: 'Wenn das Budget gerade wichtiger ist als Glamour', text: 'Billig, warm, alltagstauglich.' },
+    { preset: 'quick', title: 'Heute wenig Energie?', text: 'Schnell, warm und ohne Küchendrama.' },
+    { preset: 'mealprep', title: 'Morgen mitdenken', text: 'Gerichte mit Restelogik und Aufwärmqualität.' },
+    { preset: 'budget', title: 'Woche vor Monatsende', text: 'Maximal alltagstauglich bei kleinem Budget.' },
   ].map((item) => `
     <button type="button" class="scenario-card" data-preset="${item.preset}">
       <strong>${escapeHtml(item.title)}</strong>
@@ -295,6 +295,7 @@ function recipeCard(recipe) {
   const statuses = statusChips(recipe).map((chip) => `<span class="status-chip ${chip.alt ? 'alt' : ''}">${escapeHtml(chip.label)}</span>`).join('');
   const metas = metaPills(recipe).map((item) => `<span class="meta-pill">${escapeHtml(item)}</span>`).join('');
   const tags = compactTags(recipe).map((tag) => `<span class="tag-chip">${escapeHtml(tag)}</span>`).join('');
+  const score = recommendedScore(recipe);
 
   return `
     <article class="card panel surface-1" data-slug="${escapeHtml(recipe.slug)}" tabindex="0" role="button" aria-label="${escapeHtml(recipe.title)} öffnen">
@@ -306,7 +307,10 @@ function recipeCard(recipe) {
       <div class="card-top">
         <div class="card-kicker-row">
           <span class="card-kicker">${escapeHtml((recipe.category || [])[0] || 'Rezept')}</span>
-          <div class="card-badge-row">${statuses}</div>
+          <div class="card-badge-row">
+            <span class="card-score">Score ${score}</span>
+            ${statuses}
+          </div>
         </div>
         <h4 class="card-title">${escapeHtml(recipe.title)}</h4>
         <p class="card-description">${escapeHtml(recipe.short || 'Noch ohne Kurzfazit.')}</p>

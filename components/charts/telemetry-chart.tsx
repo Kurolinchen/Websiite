@@ -4,6 +4,15 @@ import { useEffect, useMemo, useRef } from "react";
 import { AreaSeries, ColorType, createChart, LineStyle, type Time } from "lightweight-charts";
 import { Panel } from "@/components/ui/panel";
 
+function formatLapTick(time: Time) {
+  if (typeof time === "number") return `L${time}`;
+  if (typeof time === "string") return time;
+  if (time && typeof time === "object" && "day" in time) {
+    return `${time.day}.${time.month}`;
+  }
+  return "";
+}
+
 export function TelemetryChart({
   title,
   eyebrow,
@@ -50,7 +59,7 @@ export function TelemetryChart({
       },
       timeScale: {
         borderColor: "rgba(255,255,255,0.08)",
-        tickMarkFormatter: (time) => `L${time}`,
+        tickMarkFormatter: (time: Time) => formatLapTick(time),
       },
       crosshair: {
         vertLine: { color: "rgba(255,255,255,0.16)", labelBackgroundColor: "rgba(15,23,42,0.95)" },

@@ -1,6 +1,6 @@
 "use client";
 
-import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import { animate, useMotionValue, useTransform } from "motion/react";
 import { useEffect } from "react";
 
 export function AnimatedNumber({
@@ -28,5 +28,5 @@ export function AnimatedNumber({
     return () => controls.stop();
   }, [motionValue, value]);
 
-  return <motion.span className={className}>{display}</motion.span>;
+  return <span className={className}>{display}</span>;
 }

@@ -59,12 +59,12 @@ function chooseTrackCondition(
   socialGrip: number,
   flagState: FlagState,
 ) {
-  if (flagState === "RED") return "session integrity compromised";
-  if (flagState === "SAFETY CAR") return "neutralised social traffic";
-  if (incidentRisk > 72) return "low-grip social conditions";
-  if (decisionQuality < 45) return "degraded judgement surface";
-  if (socialGrip > 78) return "stable flow window";
-  return "mixed traction across key sectors";
+  if (flagState === "RED") return "Sessionintegrität eingeschränkt";
+  if (flagState === "SAFETY CAR") return "sozialer Verkehr neutralisiert";
+  if (incidentRisk > 72) return "Low-Grip-Social-Conditions";
+  if (decisionQuality < 45) return "abbauende Urteilsoberfläche";
+  if (socialGrip > 78) return "stabiles Flow-Fenster";
+  return "gemischte Traktion in den Kernsektoren";
 }
 
 function chooseConditionLabel(
@@ -75,11 +75,11 @@ function chooseConditionLabel(
   flagState: FlagState,
 ) {
   if (flagState === "RED") return "Containment Protocol";
-  if (flagState === "SAFETY CAR") return "Stabilisation Phase";
-  if (paceIndex > 86 && incidentRisk < 32) return "Controlled Advantage";
-  if (fuelState < 24 || tyreDeg > 72) return "Supportive Measures Required";
-  if (incidentRisk > 68) return "Oversteer In Conversation";
-  return "Operationally Acceptable";
+  if (flagState === "SAFETY CAR") return "Stabilisationsphase";
+  if (paceIndex > 86 && incidentRisk < 32) return "Kontrollierter Vorteil";
+  if (fuelState < 24 || tyreDeg > 72) return "Unterstützende Maßnahmen erforderlich";
+  if (incidentRisk > 68) return "Gesprächsübersteuern";
+  return "Operativ akzeptabel";
 }
 
 function strategyFromState(args: {
@@ -97,7 +97,7 @@ function strategyFromState(args: {
     notes.push({
       id: "food",
       label: "Box this lap",
-      detail: "Nutrition window is open. Delaying service will not improve the tyre picture.",
+      detail: "Das Nahrungsfenster ist offen. Weiteres Warten verbessert die Reifensituation nicht.",
       severity: args.fuelState < 30 ? "ORANGE" : "YELLOW",
     });
   }
@@ -105,8 +105,8 @@ function strategyFromState(args: {
   if (args.incidentRisk >= 72) {
     notes.push({
       id: "heroics",
-      label: "No heroics",
-      detail: "Avoid speculative conversational moves until stability returns.",
+      label: "Keine Heldentaten",
+      detail: "Bis zur Rückkehr stabiler Verhältnisse sind spekulative Gesprächsmanöver nicht freigegeben.",
       severity: "RED",
     });
   }
@@ -114,8 +114,8 @@ function strategyFromState(args: {
   if (args.tyreDeg >= 64) {
     notes.push({
       id: "manage",
-      label: "Manage the stint",
-      detail: "Social battery is no longer happy. Reduce load and shorten engagements.",
+      label: "Stint verwalten",
+      detail: "Die Sozialbatterie überzeugt nicht mehr. Last senken, Kontakte verkürzen, unnötige Schleifen vermeiden.",
       severity: "ORANGE",
     });
   }
@@ -123,8 +123,8 @@ function strategyFromState(args: {
   if (args.hydration <= 3) {
     notes.push({
       id: "hydrate",
-      label: "Hydrate before next push",
-      detail: "Available evidence does not support another attacking lap on current fluids.",
+      label: "Vor dem nächsten Push hydrieren",
+      detail: "Die verfügbare Evidenz trägt keine weitere Angriffslap auf dem aktuellen Flüssigkeitsstand.",
       severity: "YELLOW",
     });
   }
@@ -133,7 +133,7 @@ function strategyFromState(args: {
     notes.push({
       id: "stay-out",
       label: "Stay out",
-      detail: "Current condition remains manageable. Maintain rhythm and protect position.",
+      detail: "Die Lage ist derzeit beherrschbar. Rhythmus halten und keine zusätzliche Komplexität erzeugen.",
       severity: "GREEN",
     });
   }
@@ -141,8 +141,8 @@ function strategyFromState(args: {
   if (args.phase === "Damage Limitation" && notes.length < 3) {
     notes.push({
       id: "damage",
-      label: "Switch mode",
-      detail: "Prioritise a clean finish over late-session reputation building.",
+      label: "Modus wechseln",
+      detail: "Ein sauberes Finish hat Vorrang vor späten Reputationsversuchen mit geringer Erfolgswahrscheinlichkeit.",
       severity: "YELLOW",
     });
   }
@@ -161,17 +161,17 @@ function radioFromState(args: {
   const calls: RadioCall[] = [{ id: `eng-${args.lap}`, who: "ENGINEER", message: "Copy." }];
 
   if (args.flagState === "SAFETY CAR") {
-    calls.push({ id: `rc-${args.lap}`, who: "CONTROL", message: "Safety car. Neutralise and reset." });
+    calls.push({ id: `rc-${args.lap}`, who: "CONTROL", message: "Safety car. Neutralisieren und neu ordnen." });
   } else if (args.flagState === "RED") {
-    calls.push({ id: `rc-${args.lap}`, who: "CONTROL", message: "Red flag. Further heroics suspended." });
+    calls.push({ id: `rc-${args.lap}`, who: "CONTROL", message: "Red flag. Weitere Heldentaten sind ausgesetzt." });
   } else if (args.fuelState < 28) {
-    calls.push({ id: `engb-${args.lap}`, who: "ENGINEER", message: "Box, box. Fuel model no longer looks kind." });
+    calls.push({ id: `engb-${args.lap}`, who: "ENGINEER", message: "Box, box. Das Fuel-Modell wirkt nicht mehr freundlich." });
   } else if (args.tyreDeg > 68) {
-    calls.push({ id: `engt-${args.lap}`, who: "ENGINEER", message: "Tyres are gone. Manage the exits." });
+    calls.push({ id: `engt-${args.lap}`, who: "ENGINEER", message: "Tyres are gone. Ausgänge sauber halten." });
   } else if (args.incidentRisk > 66) {
-    calls.push({ id: `engi-${args.lap}`, who: "ENGINEER", message: "Pace is acceptable. Risk is not." });
+    calls.push({ id: `engi-${args.lap}`, who: "ENGINEER", message: "Pace ist akzeptabel. Risiko nicht." });
   } else if (args.decisionQuality > 78) {
-    calls.push({ id: `engg-${args.lap}`, who: "ENGINEER", message: "Window is open. Use it without improvising." });
+    calls.push({ id: `engg-${args.lap}`, who: "ENGINEER", message: "Fenster offen. Nutzen, nicht improvisieren." });
   } else {
     calls.push({ id: `engd-${args.lap}`, who: "ENGINEER", message: "We are checking." });
   }
@@ -275,17 +275,17 @@ export function buildQualifyingReport(input: SessionInput): QualifyingReport {
   const projectedPosition = clamp(Math.round(10 - composite / 6), 2, 11);
   const opening =
     input.chaosIntent >= 7
-      ? "Opening pace looks ambitious. Containment capacity does not fully agree."
+      ? "Die Eröffnungsphase wirkt ambitioniert. Die vorhandene Rückhaltekapazität stimmt dem nur teilweise zu."
       : input.confidenceLevel >= 7
-        ? "Strong launch likely, provided appetite is managed before the middle stint."
-        : "Steady opening expected. Respectable if the driver avoids forcing the issue.";
+        ? "Starker Launch wahrscheinlich, sofern die Appetitlage vor dem Mittelstint diszipliniert behandelt wird."
+        : "Solide Eröffnung zu erwarten. Respektables Ergebnis, falls keine künstliche Dramatik erzeugt wird.";
 
   const risk =
     input.hydration <= 3
-      ? "Hydration deficit likely to distort the late-race picture."
+      ? "Ein Hydrationsdefizit wird das Bild im Spätstint erkennbar verfälschen."
       : input.hungerLevel >= 7
-        ? "Nutrition exposure will arrive earlier than the driver currently believes."
-        : "Primary risk remains conversational overreach under improving conditions.";
+        ? "Die Ernährungsproblematik wird früher eintreffen, als der Fahrer derzeit öffentlich darstellt."
+        : "Das Hauptrisiko bleibt Gesprächsübermut bei scheinbar besseren Bedingungen.";
 
   const pitWindow = clamp(Math.round(5 + (input.hungerLevel - input.budgetTolerance) / 2), 4, 10);
 
@@ -296,14 +296,14 @@ export function buildQualifyingReport(input: SessionInput): QualifyingReport {
     predictedPitWindow: `Lap ${pitWindow}–${pitWindow + 1}`,
     notes: [
       input.riskAppetite >= 7
-        ? "Aggression is available, but evidence for control remains incomplete."
-        : "Conservative calls should still produce a credible result.",
+        ? "Aggression ist verfügbar. Kontrolle bleibt weiterhin nur teilweise nachgewiesen."
+        : "Ein konservativer Ansatz sollte ein glaubwürdiges Resultat ermöglichen.",
       input.sleepLevel <= 4
-        ? "Early pace may flatter the true condition of the driver."
-        : "Base operating temperature appears acceptable on release.",
+        ? "Die frühe Pace könnte den tatsächlichen Zustand des Fahrers schmeichelhaft falsch darstellen."
+        : "Die Basistemperatur des Pakets wirkt bei Freigabe vertretbar.",
       input.budgetTolerance <= 3
-        ? "Food strategy is financially exposed. Missing the window is plausible."
-        : "Support-stop budget is sufficient for corrective action if required.",
+        ? "Die Food-Strategie bleibt finanziell exponiert. Ein verpasstes Fenster ist plausibel."
+        : "Das Stop-Budget ist ausreichend, um bei Bedarf eine Korrekturmaßnahme durchzuführen.",
     ],
   };
 }
@@ -373,7 +373,7 @@ export function simulateSession(input: SessionInput): SimulatedSession {
     }
   };
 
-  pushFeed(0, "GREEN", `Session released to ${input.trackName}. Baseline confidence model online.`);
+  pushFeed(0, "GREEN", `Session freigegeben für ${input.trackName}. Baseline-Modell und Beobachtungslage online.`);
 
   for (let lap = 1; lap <= totalLaps; lap += 1) {
     const phase = choosePhase(lap, totalLaps);
@@ -421,11 +421,11 @@ export function simulateSession(input: SessionInput): SimulatedSession {
     const markers: TelemetryFrame["markers"] = [];
 
     if (lap === 2) {
-      pushFeed(lap, "GREEN", "Opening circulation complete. Driver comfort better than predicted." );
+      pushFeed(lap, "GREEN", "Erste Umläufe abgeschlossen. Das Auftreten wirkt besser als intern befürchtet.");
     }
 
     if (lap === supportStopPlannedLap && supportStopLap === null) {
-      pushFeed(lap, "YELLOW", "Recommended food stop unavailable under declared budget policy.");
+      pushFeed(lap, "YELLOW", "Empfohlener Food-Stop unter der deklarierten Budgetpolitik aktuell nicht darstellbar.");
       markers.push({ segment: "Döner Sector", severity: "YELLOW", label: "Window Missed" });
     }
 
@@ -436,7 +436,7 @@ export function simulateSession(input: SessionInput): SimulatedSession {
       ersReserve = clamp(ersReserve + 13, 0, 100);
       tyreDeg = clamp(tyreDeg - 10, 0, 100);
       incidentRisk = clamp(incidentRisk - 11, 0, 100);
-      pushFeed(lap, "GREEN", "Support stop complete. Nutrition and morale reintroduced to the package.");
+      pushFeed(lap, "GREEN", "Support-Stop abgeschlossen. Nahrung, Moral und Restvernunft wurden dem Paket wieder zugeführt.");
       markers.push({ segment: "Döner Sector", severity: "GREEN", label: "Service Stop" });
     }
 
@@ -445,7 +445,7 @@ export function simulateSession(input: SessionInput): SimulatedSession {
       incidentRisk = clamp(incidentRisk - 7, 0, 100);
       decisionQuality = clamp(decisionQuality + 4, 0, 100);
       ersReserve = clamp(ersReserve + 4, 0, 100);
-      pushFeed(lap, "YELLOW", "Safety car deployed. Group dynamics temporarily self-correcting.");
+      pushFeed(lap, "YELLOW", "Safety Car ausgerufen. Gruppendynamik beruhigt sich vorübergehend ohne erkennbaren Verdienst des Fahrers.");
       markers.push({ segment: "Social Hairpin", severity: "YELLOW", label: "Neutralised" });
     }
 
@@ -459,8 +459,8 @@ export function simulateSession(input: SessionInput): SimulatedSession {
         lap,
         severe ? "RED" : "ORANGE",
         severe
-          ? "Unsafe conversational re-entry noted. Full containment procedures advised."
-          : "Track limits warning issued for confidence exceeding available evidence.",
+          ? "Unsichere Gesprächs-Rückkehr festgestellt. Volle Containment-Maßnahmen empfohlen."
+          : "Track-Limits-Verwarnung ausgesprochen. Das Selbstvertrauen übersteigt die aktuell verfügbare Beweislage.",
       );
       markers.push({ segment: "Re-entry Complex", severity: severe ? "RED" : "ORANGE", label: severe ? "Major Incident" : "Track Limits" });
     }
@@ -469,22 +469,22 @@ export function simulateSession(input: SessionInput): SimulatedSession {
       decisionQuality = clamp(decisionQuality + 6, 0, 100);
       socialGrip = clamp(socialGrip + 5, 0, 100);
       incidentRisk = clamp(incidentRisk - 4, 0, 100);
-      pushFeed(lap, "GREEN", "Recovery window identified. Driver adopts reduced-ego operating mode.");
+      pushFeed(lap, "GREEN", "Recovery-Fenster erkannt. Der Fahrer arbeitet vorübergehend mit reduziertem Ego-Mapping.");
       markers.push({ segment: "Warm-Up Esses", severity: "GREEN", label: "Recovery" });
     }
 
     if (fuelState < 28 && lap !== supportStopLap) {
-      pushFeed(lap, fuelState < 18 ? "ORANGE" : "YELLOW", "Nutrition deficit now visible in throttle application and judgement cadence.");
+      pushFeed(lap, fuelState < 18 ? "ORANGE" : "YELLOW", "Das Ernährungsdefizit ist nun in Gasannahme, Geduld und Satzbau sichtbar.");
       markers.push({ segment: "Döner Sector", severity: fuelState < 18 ? "ORANGE" : "YELLOW", label: "Low Fuel" });
     }
 
     if (tyreDeg > 78) {
-      pushFeed(lap, tyreDeg > 88 ? "RED" : "ORANGE", "Tyre management no longer looks convincing.");
+      pushFeed(lap, tyreDeg > 88 ? "RED" : "ORANGE", "Tyre Management wirkt nicht länger überzeugend. Die Sozialbatterie ist operativ angezählt.");
       markers.push({ segment: "Regret Straight", severity: tyreDeg > 88 ? "RED" : "ORANGE", label: "Tyres Gone" });
     }
 
     if (incidentRisk > 74 && lap !== incidentLap) {
-      pushFeed(lap, incidentRisk > 86 ? "ORANGE" : "YELLOW", "Incident probability rising through Sector 2.");
+      pushFeed(lap, incidentRisk > 86 ? "ORANGE" : "YELLOW", "Die Incident-Wahrscheinlichkeit steigt durch Sector 2 in unerfreulicher Klarheit an.");
       markers.push({ segment: "Social Hairpin", severity: incidentRisk > 86 ? "ORANGE" : "YELLOW", label: "Rising Risk" });
     }
 
@@ -523,6 +523,8 @@ export function simulateSession(input: SessionInput): SimulatedSession {
       else if (incidentRisk >= 64 || tyreDeg >= 74 || fuelState <= 22) flagState = "YELLOW";
     }
 
+    const kebabWindow = clamp(round(100 - Math.abs(lap - supportStopPlannedLap) * 18 - fuelState * 0.12 + input.hungerLevel * 4.4), 0, 100);
+
     const baseFrame = {
       lap,
       totalLaps,
@@ -541,7 +543,7 @@ export function simulateSession(input: SessionInput): SimulatedSession {
       incidentRisk: round(incidentRisk),
       decisionQuality: round(decisionQuality),
       socialGrip: round(socialGrip),
-      kebabWindow: clamp(round(100 - Math.abs(lap - supportStopPlannedLap) * 18 - fuelState * 0.12 + input.hungerLevel * 4.4), 0, 100),
+      kebabWindow,
       trackLimitsExposure: round(trackLimitsExposure),
       incidentsTotal: incidentCount,
       sectorScores: {
@@ -555,7 +557,7 @@ export function simulateSession(input: SessionInput): SimulatedSession {
         tyreDeg,
         decisionQuality,
         incidentRisk,
-        kebabWindow: clamp(round(100 - Math.abs(lap - supportStopPlannedLap) * 18 - fuelState * 0.12 + input.hungerLevel * 4.4), 0, 100),
+        kebabWindow,
         hydration: input.hydration,
         phase,
       }),
@@ -586,9 +588,9 @@ export function simulateSession(input: SessionInput): SimulatedSession {
   const tyreCliff = frames.find((frame) => frame.tyreDeg >= 76);
   const missedPitWindow = supportStopLap
     ? supportStopLap > supportStopPlannedLap + 1
-      ? `Lap ${supportStopPlannedLap} was missed; stop finally taken on lap ${supportStopLap}.`
-      : `No. Service taken within the recommended window on lap ${supportStopLap}.`
-    : `Yes. Lap ${supportStopPlannedLap} was available, but the team never boxed.`;
+      ? `Ja. Lap ${supportStopPlannedLap} war verfügbar; gestoppt wurde jedoch erst in Lap ${supportStopLap}.`
+      : `Nein. Der Support-Stop erfolgte regelkonform in Lap ${supportStopLap}.`
+    : `Ja. Lap ${supportStopPlannedLap} war verfügbar, das Team hat jedoch nie geboxt.`;
   const overallScore =
     average(frames.map((frame) => frame.paceIndex)) * 0.45 +
     average(frames.map((frame) => frame.decisionQuality)) * 0.28 +
@@ -597,41 +599,41 @@ export function simulateSession(input: SessionInput): SimulatedSession {
   const finalPosition = clamp(Math.round(12 - overallScore / 10), 1, 12);
 
   const debrief: Debrief = {
-    bestLap: `Lap ${bestFrame.lap} (${bestFrame.paceDelta > 0 ? "+" : ""}${bestFrame.paceDelta.toFixed(1)}s delta)`,
+    bestLap: `Lap ${bestFrame.lap} (${bestFrame.paceDelta > 0 ? "+" : ""}${bestFrame.paceDelta.toFixed(1)}s Delta)`,
     weakestSector,
     peakPacePhase: bestFrame.phase,
-    tyreCliffMoment: tyreCliff ? `Lap ${tyreCliff.lap}` : "No clear cliff; decline was progressive.",
+    tyreCliffMoment: tyreCliff ? `Lap ${tyreCliff.lap}` : "Kein klarer Cliff; der Abfall war progressiv.",
     incidentCount,
     missedPitWindow,
     finalClassification: `P${finalPosition} / 12`,
     engineerVerdict:
       average(frames.map((frame) => frame.paceIndex)) > 80
-        ? "Strong opening pace was real, but the evening still required better resource management in the central stint."
+        ? "Die starke Eröffnungspace war real, der Mittelstint wurde jedoch unnötig nachlässig verwaltet."
         : average(frames.map((frame) => frame.decisionQuality)) > 66
-          ? "The package lacked headline speed, yet survived on discipline and timely restraint."
-          : "Pace was occasionally visible. Session management rarely was.",
+          ? "Dem Paket fehlte Schlagzeilenspeed, es überlebte jedoch durch Disziplin und rechtzeitige Zurückhaltung."
+          : "Pace war phasenweise sichtbar. Session-Management deutlich seltener.",
     stewardNotes:
       incidentCount === 0
-        ? "No formal action. Observed behaviour remained within acceptable limits for this category."
+        ? "Keine formalen Maßnahmen. Das beobachtete Verhalten blieb für diese Kategorie innerhalb akzeptabler Grenzen."
         : incidentCount <= 2
-          ? "One or more avoidable moments were logged. Further escalation was prevented by reduced expectations."
-          : "Multiple breaches of operational judgement noted. Any appeal would struggle on available telemetry.",
+          ? "Ein oder mehrere vermeidbare Momente wurden protokolliert. Weitere Eskalation wurde eher durch sinkende Erwartungen als durch Kontrolle verhindert."
+          : "Mehrere Verstöße gegen operative Urteilsfähigkeit festgestellt. Eine Berufung hätte auf Basis der Telemetrie wenig Substanz.",
     suggestedStrategy:
       input.hungerLevel >= 7 || supportStopLap === null
-        ? "Pre-commit to a nutrition stop before the middle stint. The current gamble is not efficient."
+        ? "Für die nächste Session ist ein Food-Stop vor dem Mittelstint verbindlich einzuplanen. Die aktuelle Wette ist ineffizient."
         : input.chaosIntent >= 7
-          ? "Reduce attack mode by one setting. The gain is theatrical, not strategic."
+          ? "Attack Mode um eine Stufe reduzieren. Der Mehrwert ist überwiegend theatralisch, nicht strategisch."
           : input.sleepLevel <= 4
-            ? "Start on conservative mapping. The first clean laps are hiding the later drop-off."
-            : "Maintain the current base setup, but protect Sector 2 from unnecessary confidence spikes.",
+            ? "Mit konservativem Mapping starten. Die ersten sauberen Laps kaschieren derzeit den späteren Einbruch."
+            : "Das Grundsetup kann bleiben, Sector 2 ist jedoch strenger vor unnötigen Confidence-Spikes zu schützen.",
     highlights: [
-      "Pace is acceptable but unsustainable.",
+      "Die Pace ist akzeptabel, aber auf diesem Profil nicht nachhaltig.",
       supportStopLap
-        ? `Support intervention on lap ${supportStopLap} materially improved the outlook.`
-        : "No support intervention was completed despite clear strategic need.",
+        ? `Der Support-Eingriff in Lap ${supportStopLap} hat die Gesamtlage messbar stabilisiert.`
+        : "Trotz klarer strategischer Notwendigkeit wurde kein Support-Eingriff durchgeführt.",
       weakestSector === "Sector 2"
-        ? "Sector 2 remains the critical weakness under rising social temperature."
-        : `Primary losses came through ${weakestSector.toLowerCase()} rather than outright lack of speed.`,
+        ? "Sector 2 bleibt die kritische Schwäche unter steigender sozialer Temperatur."
+        : `Die Hauptverluste entstanden in ${weakestSector.toLowerCase()} und nicht durch blanken Geschwindigkeitsmangel.`,
     ],
   };
 

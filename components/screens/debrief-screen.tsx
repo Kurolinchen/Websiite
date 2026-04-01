@@ -20,44 +20,44 @@ export function DebriefScreen({
       <div className="mx-auto max-w-[1460px] space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-4 border border-white/10 bg-white/[0.03] px-4 py-4">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.34em] text-white/42">Post-race debrief</div>
+            <div className="text-[10px] uppercase tracking-[0.34em] text-white/42">Post-Race Debrief</div>
             <h1 className="mt-1 text-2xl font-semibold uppercase tracking-[0.12em] text-white sm:text-3xl">{input.driverName} · {input.teamName}</h1>
           </div>
           <div className="flex flex-wrap gap-2">
             <button onClick={onRestart} className="border border-white/10 bg-white/[0.04] px-4 py-3 text-[10px] uppercase tracking-[0.32em] text-white transition hover:bg-white/[0.08]">
-              Replay session
+              Session Replays
             </button>
             <button onClick={onNewSession} className="border border-white px-4 py-3 text-[10px] uppercase tracking-[0.32em] text-slate-950 transition hover:bg-white/90">
-              New setup
+              Neues Setup
             </button>
           </div>
         </div>
 
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
           <div className="space-y-5">
-            <Panel eyebrow="Classification" title="Final result">
+            <Panel eyebrow="Classification" title="Endergebnis">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                <DebriefMetric label="Final classification" value={debrief.finalClassification} />
-                <DebriefMetric label="Best lap" value={debrief.bestLap} />
-                <DebriefMetric label="Weakest sector" value={debrief.weakestSector} />
-                <DebriefMetric label="Incident count" value={String(debrief.incidentCount)} />
-                <DebriefMetric label="Peak pace phase" value={debrief.peakPacePhase} />
-                <DebriefMetric label="Tyre cliff" value={debrief.tyreCliffMoment} />
-                <DebriefMetric label="Session type" value={input.sessionType} />
+                <DebriefMetric label="Final Classification" value={debrief.finalClassification} />
+                <DebriefMetric label="Best Lap" value={debrief.bestLap} />
+                <DebriefMetric label="Weakest Sector" value={debrief.weakestSector} />
+                <DebriefMetric label="Incident Count" value={String(debrief.incidentCount)} />
+                <DebriefMetric label="Peak Pace Phase" value={debrief.peakPacePhase} />
+                <DebriefMetric label="Tyre Cliff" value={debrief.tyreCliffMoment} />
+                <DebriefMetric label="Session Type" value={input.sessionType} />
                 <DebriefMetric label="Track" value={input.trackName} />
               </div>
             </Panel>
 
-            <Panel eyebrow="Engineering verdict" title="Operational summary">
+            <Panel eyebrow="Engineering Verdict" title="Operative Zusammenfassung">
               <div className="grid gap-4 xl:grid-cols-2">
-                <ReviewBlock label="Engineer verdict" text={debrief.engineerVerdict} />
-                <ReviewBlock label="Steward notes" text={debrief.stewardNotes} />
-                <ReviewBlock label="Missed pit window" text={debrief.missedPitWindow} />
-                <ReviewBlock label="Suggested next strategy" text={debrief.suggestedStrategy} />
+                <ReviewBlock label="Engineer Verdict" text={debrief.engineerVerdict} />
+                <ReviewBlock label="Steward Notes" text={debrief.stewardNotes} />
+                <ReviewBlock label="Missed Pit Window" text={debrief.missedPitWindow} />
+                <ReviewBlock label="Suggested Next Strategy" text={debrief.suggestedStrategy} />
               </div>
             </Panel>
 
-            <Panel eyebrow="Highlights" title="Session findings">
+            <Panel eyebrow="Highlights" title="Session-Befunde">
               <div className="space-y-3">
                 {debrief.highlights.map((highlight, index) => (
                   <div key={highlight} className="flex gap-3 border border-white/8 bg-white/[0.03] px-4 py-4">
@@ -70,24 +70,24 @@ export function DebriefScreen({
           </div>
 
           <div className="space-y-5">
-            <Panel eyebrow="Session disposition" title="Official status">
+            <Panel eyebrow="Session Disposition" title="Offizieller Status">
               <div className="space-y-3">
-                <StatusRow label="Behavioural consistency" status={debrief.incidentCount <= 1 ? "GREEN" : debrief.incidentCount <= 3 ? "YELLOW" : "RED"} text={debrief.incidentCount <= 1 ? "Acceptable" : debrief.incidentCount <= 3 ? "Review advised" : "Compromised"} />
-                <StatusRow label="Resource management" status={debrief.missedPitWindow.startsWith("Yes") ? "ORANGE" : "GREEN"} text={debrief.missedPitWindow.startsWith("Yes") ? "Support window missed" : "Window respected"} />
-                <StatusRow label="Late-session stability" status={debrief.tyreCliffMoment.startsWith("Lap") ? "YELLOW" : "GREEN"} text={debrief.tyreCliffMoment} />
+                <StatusRow label="Verhaltenskonsistenz" status={debrief.incidentCount <= 1 ? "GREEN" : debrief.incidentCount <= 3 ? "YELLOW" : "RED"} text={debrief.incidentCount <= 1 ? "Akzeptabel" : debrief.incidentCount <= 3 ? "Prüfung empfohlen" : "Kompromittiert"} />
+                <StatusRow label="Ressourcenmanagement" status={debrief.missedPitWindow.startsWith("Ja") ? "ORANGE" : "GREEN"} text={debrief.missedPitWindow.startsWith("Ja") ? "Support-Fenster verpasst" : "Fenster eingehalten"} />
+                <StatusRow label="Spätstint-Stabilität" status={debrief.tyreCliffMoment.startsWith("Lap") ? "YELLOW" : "GREEN"} text={debrief.tyreCliffMoment} />
               </div>
             </Panel>
 
-            <Panel eyebrow="Driver baseline" title="Input declaration recap">
+            <Panel eyebrow="Driver Baseline" title="Deklarierte Ausgangslage">
               <div className="grid grid-cols-2 gap-3">
-                <InputMetric label="Sleep" value={input.sleepLevel} />
+                <InputMetric label="Schlaf" value={input.sleepLevel} />
                 <InputMetric label="Hunger" value={input.hungerLevel} />
-                <InputMetric label="Confidence" value={input.confidenceLevel} />
-                <InputMetric label="Social battery" value={input.socialBattery} />
-                <InputMetric label="Chaos intent" value={input.chaosIntent} />
-                <InputMetric label="Budget tolerance" value={input.budgetTolerance} />
+                <InputMetric label="Selbstvertrauen" value={input.confidenceLevel} />
+                <InputMetric label="Sozialbatterie" value={input.socialBattery} />
+                <InputMetric label="Chaos-Intent" value={input.chaosIntent} />
+                <InputMetric label="Budget-Toleranz" value={input.budgetTolerance} />
                 <InputMetric label="Hydration" value={input.hydration} />
-                <InputMetric label="Risk appetite" value={input.riskAppetite} />
+                <InputMetric label="Risikoneigung" value={input.riskAppetite} />
               </div>
             </Panel>
           </div>

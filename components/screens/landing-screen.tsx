@@ -20,11 +20,11 @@ export function LandingScreen({
       <div className="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-[1460px] flex-col justify-between border border-white/10 bg-white/[0.02] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur-sm sm:p-10">
         <div className="flex items-center justify-between gap-4 border-b border-white/8 pb-4">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.42em] text-white/45">Telemetry suite</div>
-            <div className="mt-1 text-sm uppercase tracking-[0.18em] text-white/72">Behavioural telemetry · strategy oversight · local simulation</div>
+            <div className="text-[10px] uppercase tracking-[0.42em] text-white/45">Telemetry Suite</div>
+            <div className="mt-1 text-sm uppercase tracking-[0.18em] text-white/72">Verhaltenstelemetrie · Strategische Aufsicht · Lokale Simulation</div>
           </div>
           <div className="hidden text-right text-[11px] uppercase tracking-[0.28em] text-white/40 sm:block">
-            Control room build
+            Control Room Build
             <div className="mt-1 text-white/70">NRC / Evening Conditions</div>
           </div>
         </div>
@@ -38,7 +38,7 @@ export function LandingScreen({
             >
               <div className="mb-5 inline-flex items-center gap-3 border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] uppercase tracking-[0.34em] text-white/55">
                 <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                Session-ready telemetry environment
+                Session-Ready Monitoring Environment
               </div>
               <h1 className="max-w-5xl text-4xl font-semibold uppercase tracking-[0.12em] text-white sm:text-6xl xl:text-[6.4rem] xl:leading-[0.92]">
                 Night Out
@@ -46,9 +46,9 @@ export function LandingScreen({
                 Race Control
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-8 text-white/68 sm:text-lg">
-                Behavioural telemetry and strategy oversight for unstable evening conditions.
-                Purpose-built to evaluate pace, resource depletion, conversational oversteer,
-                and late-session survival with entirely unnecessary seriousness.
+                Verhaltenstelemetrie und Strategieaufsicht für instabile Abendbedingungen.
+                Entwickelt zur Bewertung von Pace, Sozialbatterie, Gesprächsübersteuern,
+                Nahrungsfenstern und sauberem Heimkommen — mit völlig unnötiger Ernsthaftigkeit.
               </p>
             </motion.div>
 
@@ -60,16 +60,16 @@ export function LandingScreen({
             >
               <button
                 onClick={onStart}
-                className="border border-white/10 bg-white text-[11px] font-semibold uppercase tracking-[0.34em] text-slate-950 transition hover:-translate-y-0.5 hover:bg-white/90 px-5 py-3"
+                className="border border-white/10 bg-white px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.34em] text-slate-950 transition hover:-translate-y-0.5 hover:bg-white/90"
               >
-                Start Session
+                Session Starten
               </button>
               <button
                 onClick={onLoadPrevious}
                 disabled={!hasPrevious}
                 className="border border-white/12 bg-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.34em] text-white transition hover:-translate-y-0.5 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-40"
               >
-                Load Previous Session
+                Vorige Session Laden
               </button>
             </motion.div>
           </div>
@@ -80,16 +80,16 @@ export function LandingScreen({
             transition={{ delay: 0.24, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="grid gap-4"
           >
-            <HeroCard title="Live oversight" value="18 laps" detail="Progressive phases, dynamic incident model, pit-window logic and controlled escalation paths." />
-            <HeroCard title="Signal stack" value="6 sectors" detail="Warm-Up Esses, Kiosk Chicane, Social Hairpin, Regret Straight, Döner Sector, Re-entry Complex." />
-            <HeroCard title="Strategy desk" value="Real-time" detail="Dry engineer copy, incident feed, team radio, debrief verdict and local session history." />
+            <HeroCard title="Live-Aufsicht" value="18 Laps" detail="Mehrphasige Session mit Incident-Modell, Pit-Window-Logik und kontrollierten Eskalationspfaden." />
+            <HeroCard title="Streckenlayout" value="6 Segmente" detail="Warm-Up Esses, Kiosk Chicane, Social Hairpin, Regret Straight, Döner Sector und Re-entry Complex." />
+            <HeroCard title="Strategy Desk" value="Realtime" detail="Trockene Ingenieurs-Copy, Incident Feed, Team Radio, Debrief und lokale Session-Historie." />
           </motion.div>
         </div>
 
         <div className="grid gap-3 border-t border-white/8 pt-4 text-[11px] uppercase tracking-[0.26em] text-white/42 sm:grid-cols-3">
-          <div>Flag states · Green · Yellow · Safety Car · Red · Purple</div>
-          <div>Pace · Degradation · Decision quality · Social grip</div>
-          <div>No external backend required · Browser-local session memory</div>
+          <div>Flag States · Green · Yellow · Safety Car · Red · Purple</div>
+          <div>Pace · Degradation · Decision Quality · Social Grip</div>
+          <div>Kein Backend erforderlich · Lokaler Sessionspeicher im Browser</div>
         </div>
       </div>
     </div>

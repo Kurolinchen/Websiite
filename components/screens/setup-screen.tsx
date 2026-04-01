@@ -21,15 +21,23 @@ const TRACKS = [
   "Paderborn Night Circuit",
 ];
 
+const SESSION_TYPE_LABELS: Record<SessionType, string> = {
+  "Casual Run": "Casual Run",
+  "Full Send": "Full Send",
+  "Damage Limitation": "Damage Limitation",
+  "Recovery Drive": "Recovery Drive",
+  "Unknown Conditions": "Unknown Conditions",
+};
+
 const SLIDERS: Array<{ key: keyof SessionInput; label: string; description: string }> = [
-  { key: "sleepLevel", label: "Sleep level", description: "Base stability before lights out." },
-  { key: "hungerLevel", label: "Hunger level", description: "How early the fuel model starts lying." },
-  { key: "confidenceLevel", label: "Confidence level", description: "Potential pace, potential overreach." },
-  { key: "socialBattery", label: "Social battery", description: "How long the tyres remain cooperative." },
-  { key: "chaosIntent", label: "Chaos intent", description: "Declared appetite for questionable decisions." },
-  { key: "budgetTolerance", label: "Budget tolerance", description: "Operational flexibility for support stops." },
-  { key: "hydration", label: "Hydration", description: "Late-stint resilience and decision hold." },
-  { key: "riskAppetite", label: "Risk appetite", description: "How aggressively the driver attacks openings." },
+  { key: "sleepLevel", label: "Schlaflevel", description: "Grundstabilität vor Freigabe der Session." },
+  { key: "hungerLevel", label: "Hungerlevel", description: "Wie früh das Fuel-Modell unfreundlich wird." },
+  { key: "confidenceLevel", label: "Selbstvertrauen", description: "Potentielle Pace, aber auch potentieller Unsinn." },
+  { key: "socialBattery", label: "Sozialbatterie", description: "Wie lange die Reifen kooperativ bleiben." },
+  { key: "chaosIntent", label: "Chaos-Intent", description: "Erklärte Bereitschaft zu fragwürdigen Entscheidungen." },
+  { key: "budgetTolerance", label: "Budget-Toleranz", description: "Operative Freiheit für Support-Stopps." },
+  { key: "hydration", label: "Hydration", description: "Spätstint-Stabilität und Restvernunft." },
+  { key: "riskAppetite", label: "Risikoneigung", description: "Wie aggressiv sich Fenster angegriffen anfühlen." },
 ];
 
 export function SetupScreen({
@@ -54,32 +62,32 @@ export function SetupScreen({
       <div className="mx-auto max-w-[1460px]">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-4 border border-white/10 bg-white/[0.03] px-4 py-3">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.34em] text-white/42">Pre-race setup</div>
-            <div className="mt-1 text-sm uppercase tracking-[0.14em] text-white/84">Driver declaration and baseline calibration</div>
+            <div className="text-[10px] uppercase tracking-[0.34em] text-white/42">Pre-Race Setup</div>
+            <div className="mt-1 text-sm uppercase tracking-[0.14em] text-white/84">Fahrerdeklaration und Baseline-Kalibrierung</div>
           </div>
           <button onClick={onBack} className="border border-white/10 px-3 py-2 text-[10px] uppercase tracking-[0.28em] text-white/68 transition hover:bg-white/[0.05]">
-            Return to landing
+            Zurück zum Start
           </button>
         </div>
 
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.15fr)_430px]">
           <div className="space-y-5">
-            <Panel eyebrow="Identity" title="Session declaration">
+            <Panel eyebrow="Identität" title="Session-Deklaration">
               <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Driver name">
+                <Field label="Driver Name">
                   <input value={value.driverName} onChange={(e) => onChange({ ...value, driverName: e.target.value })} className={inputClass} />
                 </Field>
-                <Field label="Team name">
+                <Field label="Team Name">
                   <input value={value.teamName} onChange={(e) => onChange({ ...value, teamName: e.target.value })} className={inputClass} />
                 </Field>
-                <Field label="Session type">
+                <Field label="Session Type">
                   <select value={value.sessionType} onChange={(e) => onChange({ ...value, sessionType: e.target.value as SessionType })} className={inputClass}>
                     {SESSION_TYPES.map((type) => (
-                      <option key={type}>{type}</option>
+                      <option key={type} value={type}>{SESSION_TYPE_LABELS[type]}</option>
                     ))}
                   </select>
                 </Field>
-                <Field label="Track name">
+                <Field label="Track Name">
                   <div className="space-y-3">
                     <select value={TRACKS.includes(value.trackName) ? value.trackName : "Custom"} onChange={(e) => onChange({ ...value, trackName: e.target.value === "Custom" ? value.trackName : e.target.value })} className={inputClass}>
                       {TRACKS.map((track) => (
@@ -93,7 +101,7 @@ export function SetupScreen({
               </div>
             </Panel>
 
-            <Panel eyebrow="Driver model" title="Performance and degradation inputs">
+            <Panel eyebrow="Fahrermodell" title="Performance- und Degradationsparameter">
               <div className="grid gap-4 lg:grid-cols-2">
                 {SLIDERS.map((slider) => (
                   <div key={slider.key} className="border border-white/8 bg-white/[0.03] p-4">
@@ -124,18 +132,18 @@ export function SetupScreen({
           </div>
 
           <div className="space-y-5">
-            <Panel eyebrow="Control summary" title="Expected operating envelope">
+            <Panel eyebrow="Control Summary" title="Erwartetes Betriebsfenster">
               <div className="grid gap-3">
                 <SummaryRow label="Driver" value={value.driverName} />
                 <SummaryRow label="Team" value={value.teamName} />
                 <SummaryRow label="Track" value={value.trackName} />
-                <SummaryRow label="Declared mode" value={value.sessionType} />
+                <SummaryRow label="Declared Mode" value={SESSION_TYPE_LABELS[value.sessionType]} />
               </div>
               <div className="mt-5 grid grid-cols-2 gap-3">
-                <MiniMetric label="Composure" value={score(value.sleepLevel, value.hydration, value.socialBattery)} />
-                <MiniMetric label="Volatility" value={score(value.chaosIntent, value.riskAppetite, value.confidenceLevel)} danger />
-                <MiniMetric label="Support need" value={score(value.hungerLevel, 10 - value.hydration, 10 - value.budgetTolerance)} danger />
-                <MiniMetric label="Opening pace" value={score(value.confidenceLevel, value.socialBattery, value.sleepLevel)} />
+                <MiniMetric label="Stabilität" value={score(value.sleepLevel, value.hydration, value.socialBattery)} />
+                <MiniMetric label="Volatilität" value={score(value.chaosIntent, value.riskAppetite, value.confidenceLevel)} danger />
+                <MiniMetric label="Support-Bedarf" value={score(value.hungerLevel, 10 - value.hydration, 10 - value.budgetTolerance)} danger />
+                <MiniMetric label="Opening Pace" value={score(value.confidenceLevel, value.socialBattery, value.sleepLevel)} />
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 <StatusPill value={score(value.sleepLevel, value.socialBattery, value.hydration) > 72 ? "GREEN" : "YELLOW"} />
@@ -144,29 +152,29 @@ export function SetupScreen({
               </div>
             </Panel>
 
-            <Panel eyebrow="Actions" title="Simulation commands">
+            <Panel eyebrow="Aktionen" title="Simulationsbefehle">
               <div className="grid gap-3">
                 <button onClick={onQualifying} className={primaryButtonClass}>
-                  Run qualifying sim
+                  Qualifying-Simulation
                 </button>
                 <button onClick={onStart} className={secondaryButtonClass}>
-                  Start race control
+                  Race Control Starten
                 </button>
                 <button onClick={onFastSim} className={secondaryButtonClass}>
-                  Full race simulation
+                  Volle Rennsimulation
                 </button>
               </div>
             </Panel>
 
-            <Panel eyebrow="Qualifying preview" title="Projected release report">
+            <Panel eyebrow="Qualifying Preview" title="Freigabebericht">
               {qualifying ? (
                 <div className="space-y-4">
                   <div className="text-4xl font-semibold uppercase tracking-[0.08em] text-white">{qualifying.projectedGrid}</div>
-                  <PreviewBlock label="Expected opening" text={qualifying.expectedOpening} />
-                  <PreviewBlock label="Starting risk" text={qualifying.startingRisk} />
-                  <PreviewBlock label="Predicted pit window" text={qualifying.predictedPitWindow} />
+                  <PreviewBlock label="Erwartete Eröffnungsphase" text={qualifying.expectedOpening} />
+                  <PreviewBlock label="Start-Risiko" text={qualifying.startingRisk} />
+                  <PreviewBlock label="Erwartetes Pit Window" text={qualifying.predictedPitWindow} />
                   <div className="border border-white/8 bg-white/[0.03] p-3">
-                    <div className="mb-2 text-[10px] uppercase tracking-[0.3em] text-white/42">Engineer notes</div>
+                    <div className="mb-2 text-[10px] uppercase tracking-[0.3em] text-white/42">Engineer Notes</div>
                     <ul className="space-y-2 text-sm leading-7 text-white/64">
                       {qualifying.notes.map((note) => (
                         <li key={note}>— {note}</li>
@@ -176,7 +184,7 @@ export function SetupScreen({
                 </div>
               ) : (
                 <div className="text-sm leading-7 text-white/54">
-                  Run a qualifying sim to generate a dry, unreasonably serious prediction of how the evening is likely to unfold.
+                  Starte eine Qualifying-Simulation, um eine unangemessen ernsthafte Prognose für den Verlauf des Abends zu erzeugen.
                 </div>
               )}
             </Panel>

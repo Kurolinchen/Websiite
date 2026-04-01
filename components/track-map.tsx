@@ -31,7 +31,7 @@ export function TrackMap({
 
   return (
     <Panel
-      eyebrow="Track intelligence"
+      eyebrow="Track Intelligence"
       title={trackName}
       action={<StatusPill value={flagState} />}
       className="min-h-[420px]"
@@ -73,14 +73,14 @@ export function TrackMap({
           </svg>
         </div>
         <div className="space-y-3">
-          <MapLabel title="Active segment" value={activeSegment} />
-          <MapLabel title="Primary warning" value={markers[0]?.label ?? "None"} subdued={!markers[0]} />
-          <MapLabel title="Trajectory" value={flagState === "RED" ? "Containment" : flagState === "SAFETY CAR" ? "Neutralised" : "Live push"} />
+          <MapLabel title="Aktives Segment" value={activeSegment} />
+          <MapLabel title="Primäre Warnung" value={markers[0]?.label ?? "Keine"} subdued={!markers[0]} />
+          <MapLabel title="Trajectory" value={flagState === "RED" ? "Containment" : flagState === "SAFETY CAR" ? "Neutralised" : "Live Push"} />
           <div className="border border-white/8 bg-white/[0.03] p-3">
-            <div className="mb-2 text-[10px] uppercase tracking-[0.28em] text-white/42">Segment stack</div>
+            <div className="mb-2 text-[10px] uppercase tracking-[0.28em] text-white/42">Segment Stack</div>
             <div className="space-y-2 text-sm text-white/75">
               {NODES.map((node, index) => (
-                <div key={node.name} className={cn("flex items-center justify-between gap-3 border-b border-white/5 py-1 last:border-b-0", node.name === activeSegment && "text-white") }>
+                <div key={node.name} className={cn("flex items-center justify-between gap-3 border-b border-white/5 py-1 last:border-b-0", node.name === activeSegment && "text-white")}>
                   <span className="truncate">T{index + 1} · {node.name}</span>
                   <span className="text-white/42">{String(index + 1).padStart(2, "0")}</span>
                 </div>

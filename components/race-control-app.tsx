@@ -89,7 +89,7 @@ export function RaceControlApp() {
     setQualifying(parsed.qualifying);
     setFrameIndex(parsed.frames.length - 1);
     setIsPlaying(false);
-    setPlaybackLabel("Loaded session");
+    setPlaybackLabel("Geladene Session");
     setScreen("debrief");
   };
 
@@ -105,7 +105,7 @@ export function RaceControlApp() {
     if (!session) return;
     setFrameIndex(0);
     setPlaybackSpeed(650);
-    setPlaybackLabel("Replay feed");
+    setPlaybackLabel("Replay Feed");
     setScreen("dashboard");
     setIsPlaying(true);
   };
@@ -129,8 +129,8 @@ export function RaceControlApp() {
               }}
               onBack={() => setScreen("landing")}
               onQualifying={() => setQualifying(buildQualifyingReport(input))}
-              onStart={() => startSimulation(950, "Live feed")}
-              onFastSim={() => startSimulation(280, "Accelerated sim")}
+              onStart={() => startSimulation(950, "Live Feed")}
+              onFastSim={() => startSimulation(280, "Beschleunigte Simulation")}
               qualifying={qualifying}
             />
           </ScreenFrame>

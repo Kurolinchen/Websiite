@@ -1,6 +1,6 @@
 "use client";
 
-import { animate, useMotionValue, useTransform } from "motion/react";
+import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { useEffect } from "react";
 
 export function AnimatedNumber({
@@ -17,7 +17,10 @@ export function AnimatedNumber({
   className?: string;
 }) {
   const motionValue = useMotionValue(value);
-  const display = useTransform(motionValue, (latest) => `${prefix}${latest.toFixed(digits)}${suffix}`);
+  const display = useTransform(
+    motionValue,
+    (latest) => `${prefix}${latest.toFixed(digits)}${suffix}`
+  );
 
   useEffect(() => {
     const controls = animate(motionValue, value, {
@@ -28,5 +31,5 @@ export function AnimatedNumber({
     return () => controls.stop();
   }, [motionValue, value]);
 
-  return <span className={className}>{display}</span>;
+  return <motion.span className={className}>{display}</motion.span>;
 }
